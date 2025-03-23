@@ -1,11 +1,9 @@
-import { useState, useReducer } from "react";
+import { useState, useReducer, useRef } from "react";
 
 export default function TodoList() {
-    const [input, setInput] = useState("")
+    const inputRef = useRef(null);
     const initialState = { task : []};
-    function handleChange(e){
-        setInput(e.target.value);
-    }
+    
     function reducer(state, action) {
         switch (action.type) {
           case "them":
@@ -24,16 +22,16 @@ export default function TodoList() {
                 <input
                     type="text"
                     className="h-10 rounded-lg border-2 border-amber-300 px-2"
-                    onChange={handleChange}
-                    value={input}
+                    ref={inputRef}
                     placeholder="Nhập công việc"
                 />
                 <button
                     className="bg-blue-500 text-white px-4 py-2 rounded-lg"
                     onClick={() => {
+                        var input = inputRef.current.value.trim();
                         if (input.trim()) {
                             dispatch({ type: "them", payload: input });
-                            setInput(""); // Xóa input sau khi thêm
+                            inputRef.current.value = "";// Xóa input sau khi thêm
                         }
                     }}
                 >
